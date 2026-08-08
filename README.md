@@ -92,17 +92,27 @@ DAX was used to create calculated measures and analytical metrics for the dashbo
 
    * Measures the percentage of product views that resulted in clicks.
    * Used to identify early-stage customer engagement and potential bottlenecks in the purchase journey.
-  
-View-to-click rate = DIVIDE(
-CALCULATE(DISTINCTCOUNT(events[session_id]), events[event_type] = "purchase"), 
-CALCULATE(DISTINCTCOUNT(events[session_id]), events[event_type] = "view")
+
+```DAX
+View-to-Click Rate =
+DIVIDE(
+    CALCULATE(
+        DISTINCTCOUNT(events[session_id]),
+        events[event_type] = "purchase"
+    ),
+    CALCULATE(
+        DISTINCTCOUNT(events[session_id]),
+        events[event_type] = "view"
+    )
 )
+```
 
 2. **Customer Categorization**
 
    * Categorizes customers based on purchasing behavior and revenue.
    * Helps identify different customer value and engagement groups.
 
+```DAX
 Customer Categorization = 
 SWITCH(TRUE(),
     'Customer Summary'[Repeat Purchase Time] <> 1, "Repeat Purchase Customers",
@@ -111,6 +121,7 @@ SWITCH(TRUE(),
     AND('Customer Summary'[View Counts] > 4000, 'Customer Summary'[Purchase Counts] < 2000), "Window Shoppers",
     AND('Customer Summary'[Avg Session Duration] < 130, 'Customer Summary'[Purchase Counts] > 2000), "Impulsive Buyers",
     AND('Customer Summary'[Repeat Purchase Time] == 1, 'Customer Summary'[Refund Times] = 1), "Single-Purchase Refunders")
+```
 
 Additional measures were developed to support analysis of:
 
